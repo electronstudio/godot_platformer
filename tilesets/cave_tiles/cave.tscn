@@ -1,0 +1,151 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://tools/batch_rename.gd" type="Script" id=1]
+[ext_resource path="res://tilesets/cave_tiles/tiles/cave_01.png" type="Texture" id=2]
+[ext_resource path="res://tilesets/cave_tiles/tiles/cave_02.png" type="Texture" id=3]
+[ext_resource path="res://tilesets/cave_tiles/tiles/cave_03.png" type="Texture" id=4]
+[ext_resource path="res://tilesets/cave_tiles/tiles/cave_04.png" type="Texture" id=5]
+[ext_resource path="res://tilesets/cave_tiles/tiles/cave_05.png" type="Texture" id=6]
+[ext_resource path="res://tilesets/cave_tiles/tiles/cave_06.png" type="Texture" id=7]
+[ext_resource path="res://tilesets/cave_tiles/tiles/cave_07.png" type="Texture" id=8]
+[ext_resource path="res://tilesets/cave_tiles/tiles/cave_08.png" type="Texture" id=9]
+[ext_resource path="res://tilesets/cave_tiles/tiles/cave_09.png" type="Texture" id=10]
+[ext_resource path="res://tilesets/cave_tiles/tiles/cave_10.png" type="Texture" id=11]
+[ext_resource path="res://tilesets/cave_tiles/tiles/cave_11.png" type="Texture" id=12]
+[ext_resource path="res://tilesets/cave_tiles/tiles/cave_12.png" type="Texture" id=13]
+
+[node name="cave_set" type="Node2D"]
+script = ExtResource( 1 )
+new_name = "axe"
+
+[node name="axe_01" type="Sprite" parent="."]
+editor/display_folded = true
+position = Vector2( 32, 32 )
+texture = ExtResource( 2 )
+
+[node name="static_body" type="StaticBody2D" parent="axe_01"]
+editor/display_folded = true
+
+[node name="collision_polygon_2d" type="CollisionPolygon2D" parent="axe_01/static_body"]
+polygon = PoolVector2Array( -32, -32, 32, -32, 32, 32, -32, 32 )
+
+[node name="axe_02" type="Sprite" parent="."]
+editor/display_folded = true
+position = Vector2( 96, 32 )
+texture = ExtResource( 3 )
+
+[node name="static_body" type="StaticBody2D" parent="axe_02"]
+editor/display_folded = true
+
+[node name="collision_polygon_2d" type="CollisionPolygon2D" parent="axe_02/static_body"]
+polygon = PoolVector2Array( -32, -32, 32, -32, 32, 32, -32, 32 )
+
+[node name="axe_03" type="Sprite" parent="."]
+editor/display_folded = true
+position = Vector2( 160, 32 )
+texture = ExtResource( 4 )
+
+[node name="static_body" type="StaticBody2D" parent="axe_03"]
+editor/display_folded = true
+
+[node name="collision_polygon_2d" type="CollisionPolygon2D" parent="axe_03/static_body"]
+polygon = PoolVector2Array( -32, -32, 32, -32, 32, 32, -32, 32 )
+
+[node name="axe_04" type="Sprite" parent="."]
+editor/display_folded = true
+position = Vector2( 224, 32 )
+texture = ExtResource( 5 )
+
+[node name="static_body" type="StaticBody2D" parent="axe_04"]
+editor/display_folded = true
+
+[node name="collision_polygon_2d" type="CollisionPolygon2D" parent="axe_04/static_body"]
+polygon = PoolVector2Array( 0, -32, 32, -32, 32, 32, -8, 24, -32, 0, -32, -32 )
+
+[node name="axe_05" type="Sprite" parent="."]
+editor/display_folded = true
+position = Vector2( 288, 32 )
+texture = ExtResource( 6 )
+
+[node name="static_body" type="StaticBody2D" parent="axe_05"]
+editor/display_folded = true
+
+[node name="collision_polygon_2d" type="CollisionPolygon2D" parent="axe_05/static_body"]
+polygon = PoolVector2Array( -32, 32, 32, 32, 32, -32 )
+
+[node name="axe_06" type="Sprite" parent="."]
+editor/display_folded = true
+position = Vector2( 352, 32 )
+texture = ExtResource( 7 )
+
+[node name="static_body" type="StaticBody2D" parent="axe_06"]
+editor/display_folded = true
+
+[node name="collision_polygon_2d" type="CollisionPolygon2D" parent="axe_06/static_body"]
+polygon = PoolVector2Array( -32, -4, 32, -4, 32, 32, -32, 32 )
+
+[node name="axe_07" type="Sprite" parent="."]
+editor/display_folded = true
+position = Vector2( 416, 32 )
+texture = ExtResource( 8 )
+
+[node name="static_body" type="StaticBody2D" parent="axe_07"]
+editor/display_folded = true
+
+[node name="collision_polygon_2d" type="CollisionPolygon2D" parent="axe_07/static_body"]
+polygon = PoolVector2Array( -32, -4, 32, -4, 32, 32, -32, 32 )
+
+[node name="axe_08" type="Sprite" parent="."]
+editor/display_folded = true
+position = Vector2( 480, 32 )
+texture = ExtResource( 9 )
+
+[node name="static_body" type="StaticBody2D" parent="axe_08"]
+editor/display_folded = true
+
+[node name="collision_polygon_2d" type="CollisionPolygon2D" parent="axe_08/static_body"]
+polygon = PoolVector2Array( -32, -4, 32, -4, 32, 32, -32, 32 )
+
+[node name="axe_09" type="Sprite" parent="."]
+editor/display_folded = true
+position = Vector2( 544, 32 )
+texture = ExtResource( 10 )
+
+[node name="static_body" type="StaticBody2D" parent="axe_09"]
+editor/display_folded = true
+
+[node name="collision_polygon_2d" type="CollisionPolygon2D" parent="axe_09/static_body"]
+polygon = PoolVector2Array( -32, -32, -32, -8, -4, 8, 12, 32, 32, 32, 32, -32 )
+
+[node name="axe_10" type="Sprite" parent="."]
+editor/display_folded = true
+position = Vector2( 608, 32 )
+texture = ExtResource( 11 )
+
+[node name="static_body" type="StaticBody2D" parent="axe_10"]
+editor/display_folded = true
+
+[node name="collision_polygon_2d" type="CollisionPolygon2D" parent="axe_10/static_body"]
+polygon = PoolVector2Array( -32, -32, -32, 32, 32, 32, 32, -32 )
+
+[node name="axe11" type="Sprite" parent="."]
+editor/display_folded = true
+position = Vector2( 672, 32 )
+texture = ExtResource( 12 )
+
+[node name="static_body" type="StaticBody2D" parent="axe11"]
+editor/display_folded = true
+
+[node name="collision_polygon_2d" type="CollisionPolygon2D" parent="axe11/static_body"]
+polygon = PoolVector2Array( -32, -32, -32, 32, 32, 32, 32, -32 )
+
+[node name="ax12" type="Sprite" parent="."]
+editor/display_folded = true
+position = Vector2( 736, 32 )
+texture = ExtResource( 13 )
+
+[node name="static_body" type="StaticBody2D" parent="ax12"]
+editor/display_folded = true
+
+[node name="collision_polygon_2d" type="CollisionPolygon2D" parent="ax12/static_body"]
+polygon = PoolVector2Array( -32, -32, -32, 32, 32, 32, 32, -32 )

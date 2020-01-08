@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://coin.gd" type="Script" id=1]
+[ext_resource path="res://items/coinGold.png" type="Texture" id=2]
+[ext_resource path="res://audio/digital_sfx/source/powerUp5.ogg" type="AudioStream" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 17.5672
+
+[sub_resource type="AudioStreamRandomPitch" id=2]
+audio_stream = ExtResource( 3 )
+
+[node name="coin" type="Area2D"]
+collision_layer = 4
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="coinGold" type="Sprite" parent="."]
+position = Vector2( 0.0842285, -0.383606 )
+texture = ExtResource( 2 )
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="powerUp5" type="AudioStreamPlayer" parent="."]
+stream = SubResource( 2 )
+[connection signal="body_entered" from="." to="." method="_on_coin_body_entered"]
