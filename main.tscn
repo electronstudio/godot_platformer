@@ -44,6 +44,7 @@ __meta__ = {
 }
 
 [node name="alien_pink" parent="player" instance=ExtResource( 3 )]
+frame = 1
 playing = true
 
 [node name="collision_shape_2d" type="CollisionShape2D" parent="player"]
@@ -128,6 +129,7 @@ position = Vector2( 1820, 30 )
 position = Vector2( 1950, 20 )
 
 [node name="HUD" type="CanvasLayer" parent="."]
+editor/display_folded = true
 script = ExtResource( 9 )
 
 [node name="label" type="Label" parent="HUD"]

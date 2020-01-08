@@ -43,24 +43,6 @@ func _physics_process(delta):
 			if position.y < collider.position.y - 10:
 				velocity.y = -400
 				collider.kill()
-			#else:
-			#	kill_player()
-
-	
 
 func kill():
 	get_tree().reload_current_scene()
-
-
-#func _on_area_2d_body_entered(body):
-#	print("on body", body)
-#	if body == self:
-#		kill_player()
-#
-#
-#func _on_area_2d_area_entered(area):
-#	print("on area", area)
-#
-#
-#func _on_hit_Box_body_entered(body):
-#	velocity.y = -400
