@@ -25,24 +25,3 @@ func _physics_process(delta):
 	velocity.y += 20
 	velocity = move_and_slide(velocity, Vector2.UP)
 	
-	if jump_timer > 0:
-		jump_timer -= delta
-		if Input.is_action_pressed('jump'):
-			velocity.y = -400
-			if not $phaseJump1.playing: $phaseJump1.play()
-
-	#velocity.x = clamp(velocity.x, -400, 400)
-	$alien_pink.flip_h = velocity.x < 0
-	
-	if position.y>700:
-		kill()
-
-	for i in get_slide_count():
-		var collider = get_slide_collision(i).collider
-		if collider.has_method("kill"):
-			if position.y < collider.position.y - 10:
-				velocity.y = -400
-				collider.kill()
-
-func kill():
-	get_tree().reload_current_scene()
