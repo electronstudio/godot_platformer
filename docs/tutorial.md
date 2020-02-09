@@ -6,7 +6,7 @@ Or install it from the software centre on Linux.
 
 ### Import starter project
 
-Download [godot_platformer1.zip](/public/godot_platformer1.zip) and unzip it.  In Godot file manager, select 'import' and then select the project.godot file in godot_platformer1.
+Download [godot_platformer1.zip](/godot_platformer1.zip) and unzip it.  In Godot file manager, select 'import' and then select the project.godot file in godot_platformer1.
 
 ### Player
 
@@ -39,7 +39,9 @@ func kill():
 Work out what each line does.
 
 Q. How can you change the code to make the player jump higher?
+
 Q. How can you make the player run faster?
+
 Q. How can you make the player fall slower?
 
 ### The bee
