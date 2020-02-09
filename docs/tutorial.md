@@ -1,25 +1,30 @@
-## Godot
+# Godot Platform Game Tutorial
+
+[Related videos](https://www.youtube.com/playlist?list=PLrk78MvfQ-tNR1ljywJvKsnqhylw3l4xi)
+
+## Install Godot
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Wend9ao8uy8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 [Download Godot here](https://godotengine.org/download)
 
 Or install it from the software centre on Linux.
 
-### Import starter project
+## Import starter project
 
 Download [godot_platformer1.zip](/godot_platformer1.zip) and unzip it.  In Godot file manager, select `import` and then select the `project.godot` file in `godot_platformer1`.
 
-### Player
+## Player code
 
 Add this code to `player.gd` file.
 
-```
+```gdscript
 	if jump_timer > 0:
 		jump_timer -= delta
 		if Input.is_action_pressed('jump'):
 			velocity.y = -400
 			if not $phaseJump1.playing: $phaseJump1.play()
 
-	#velocity.x = clamp(velocity.x, -400, 400)
 	$alien_pink.flip_h = velocity.x < 0
 	
 	if position.y>700:
@@ -44,7 +49,7 @@ Q. How can you make the player run faster?
 
 Q. How can you make the player fall slower?
 
-### The bee
+## The bee
 
 The bee is harmless.  Take a look at its nodes.
 
