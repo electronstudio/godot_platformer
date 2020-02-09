@@ -6,11 +6,11 @@ Or install it from the software centre on Linux.
 
 ### Import starter project
 
-Download [godot_platformer1.zip](/godot_platformer1.zip) and unzip it.  In Godot file manager, select 'import' and then select the project.godot file in godot_platformer1.
+Download [godot_platformer1.zip](/godot_platformer1.zip) and unzip it.  In Godot file manager, select `import` and then select the `project.godot` file in `godot_platformer1`.
 
 ### Player
 
-Add the remaining lines from the printout to player.gd file.
+Add this code to `player.gd` file.
 
 ```
 	if jump_timer > 0:
