@@ -1,6 +1,11 @@
-# godot_platformer
-example game for coderdojo
+# Godot Platform Game Tutorial
 
-Play here: https://electronstudio.github.io/godot_platformer/
+Do the tutorial: https://electronstudio.github.io/godot_platformer/tutorial
 
-Lesson1 branch contains only the files required for first lesson.
+Play finished game: https://electronstudio.github.io/godot_platformer/
+
+# Credits
+
+Graphics and sounds from https://kenney.nl/
+
+Some importing, animation and collision masks done by https://pigdev.itch.io/godot-sandbox 

@@ -12,11 +12,19 @@ Or install it from the software centre on Linux.
 
 ## Import starter project
 
-Download [godot_platformer1.zip](/godot_platformer1.zip) and unzip it.  In Godot file manager, select `import` and then select the `project.godot` file in `godot_platformer1`.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ovt4hS9iLYY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+1. Download [godot_platformer1.zip](godot_platformer1.zip) and unzip it.
+
+2. In Godot project manager, select `import`.
+
+3. Then double click the `project.godot` file in `godot_platformer1`.
+
+4. Project may take a while to import.  When it has finished, click the run button to test it and play the game.
 
 ## Player code
 
-Add this code to `player.gd` file.
+Add this code to the end of the `player.gd` file.
 
 ```gdscript
 	if jump_timer > 0:
@@ -41,46 +49,69 @@ func kill():
 	get_tree().reload_current_scene()
 ```
 
-Work out what each line does.
+Test the game again.
 
-Q. How can you change the code to make the player jump higher?
+* Work out what each line does.
 
-Q. How can you make the player run faster?
+* How can you change the code to make the player jump higher?
 
-Q. How can you make the player fall slower?
+* How can you make the player run faster?
+
+* How can you make the player fall slower?
 
 ## The bee
 
-The bee is harmless.  Take a look at its nodes.
+The bee is harmless.
 
-Q. In the game, can you kick the bee?  How does it move when we have not written any code for it?
+* Take a look at its nodes.
 
-### Speed
+* In the game, can you kick the bee?
+
+* How does it move when we have not written any code for it?
+
+## Speed
 
 Try adding this to the player.gd:
 
     velocity.x = clamp(velocity.x, -300, 300)
 
-Q. What does it do?
+* What does it do?
 
-### Scrolling
+## Scrolling
 
-Add a Camera2d node as a child of player node.  Click Current->On to enable it.
+1. Add a `Camera2d` node as a child of `player` node.
 
-### Map
+2. In the inspector, click `Current` `On` to enable it.
 
-Click the tilemap node and create your own level  Click left mouse to place a tile and right mouse to delete a tile (you can delete my tiles if you like).
+## Map
 
-### Parallax Scrolling Background
+1. Click the `tilemap` node.
 
-Add ParallaxBackground node to main scene.  Add ParallaxLayer as child node of this.  Set Motion->Scale->x to 0.5.  Set Motion->Mirroring-X to 1024.  Drag in an image, eg. backgroundCastles.png to the scene and drag it to become child of ParallaxLayer.
+2. Click left mouse to place a tile and right mouse to delete a tile (you can delete my tiles if you like).
+ 
+3. Create your own level  
 
-Q. What is Parallax?
+## Parallax Scrolling Background
 
-### Coins
+1. Add `ParallaxBackground` node to main scene.
 
-There is one coin node, an Area2d, already added for you.  It has a sound, image and collision shape but it doesn't have a script.  Right click it, select 'attach script', press 'Create'.  Delete all the code that is there and enter the new script code:
-```
+2. Add `ParallaxLayer` as child node of this.
+
+3. Set `Motion->Scale->x` to 0.5.
+
+4. Set `Motion->Mirroring-X` to 1024.
+
+5. Drag in an image, eg. `backgroundCastles.png` to the scene and drag it to become child of `ParallaxLayer`.
+
+* What is Parallax?
+
+## Coins
+
+There is one coin node, an `Area2d`, already added for you.  It has a sound, image and collision shape but it doesn't have a script.
+
+Right click it, select 'attach script', press 'Create'.  Delete all the code that is there and enter the new script code:
+
+```gdscript
 extends Area2D
 
 func _on_coin_body_entered(body):
@@ -91,13 +122,13 @@ func _on_coin_body_entered(body):
 	queue_free()
 ```
 
-### Instancing
+## Instancing
 
 Since we will have a lot of coins it makes sense to make the coin a separate scene and then instance this scene every time we want to make a coin. Right click the coin node, select 'save branch as scene', click 'save'.
 
 Now right click on 'coins' node, select 'instance child scene' and select your coin.tscn scene.  Drag the coin to where you want it.
 
-### Enemies
+## Enemies
 
 Click `Scene` menu, then `New Scene` then click `2D Scene` as the root node. 
 
@@ -118,7 +149,7 @@ Now we need to add child notes to the root node.
 5. Right-click `node_2d`, select `attach script`.  Change the `Path` to `res://ant.gd`.  Press `Create`.  Copy the printout code into the script.
 
 
-```
+```gdscript
 extends KinematicBody2D
 
 var direction = Vector2.LEFT
@@ -150,7 +181,7 @@ func kill():
 
 Now we can switch back to our main scene and add enemies by dragging in `ant.tscn`.
 
-## Homework
+## Challenge
 
 Add more tiles, coins and enemies to create a challenging game.  Also try adding a second player, or changing the player sprite to a different one.
 
