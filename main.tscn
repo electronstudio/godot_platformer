@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://backgrounds/backgroundCastles.png" type="Texture" id=1]
 [ext_resource path="res://player.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://enemy.tscn" type="PackedScene" id=8]
 [ext_resource path="res://HUD.gd" type="Script" id=9]
 [ext_resource path="res://interface/fonts/kenvector_future_32.tres" type="DynamicFont" id=10]
+[ext_resource path="res://items/flagRed.png" type="Texture" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 22.5473, 45.1373 )
@@ -19,6 +20,9 @@ audio_stream = ExtResource( 4 )
 
 [sub_resource type="CircleShape2D" id=3]
 radius = 23.984
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 48.2238, 37.4729 )
 
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 150, 100 )
@@ -54,14 +58,14 @@ shape = SubResource( 1 )
 [node name="camera_2d" type="Camera2D" parent="player"]
 current = true
 limit_left = 0
+limit_top = -300
 limit_bottom = 500
 
 [node name="phaseJump1" type="AudioStreamPlayer" parent="player"]
 stream = SubResource( 2 )
 
 [node name="bee" type="RigidBody2D" parent="."]
-editor/display_folded = true
-position = Vector2( 597.619, 20 )
+position = Vector2( 650.901, -0.128906 )
 continuous_cd = 2
 linear_damp = 0.0
 __meta__ = {
@@ -74,6 +78,20 @@ shape = SubResource( 3 )
 [node name="bee" parent="bee" instance=ExtResource( 5 )]
 position = Vector2( 0.385498, -0.257278 )
 
+[node name="bee2" type="RigidBody2D" parent="."]
+position = Vector2( 565.65, -51.0433 )
+continuous_cd = 2
+linear_damp = 0.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="bee2"]
+shape = SubResource( 3 )
+
+[node name="bee" parent="bee2" instance=ExtResource( 5 )]
+position = Vector2( 0.385498, -0.257278 )
+
 [node name="tile_map2" type="TileMap" parent="."]
 tile_set = ExtResource( 6 )
 collision_friction = 0.0
@@ -81,7 +99,6 @@ format = 1
 tile_data = PoolIntArray( -131072, 0, 4, -131040, 0, 131072, -131039, 0, 131072, -131038, 0, 131072, -131037, 0, 131072, -65536, 0, 0, -65515, 0, 65539, -65514, 0, 65538, -65504, 0, 131072, -65503, 0, 131072, -65502, 0, 131072, -65501, 0, 131072, 0, 0, 131072, 20, 0, 65539, 21, 0, 131075, 22, 0, 131074, 23, 0, 65538, 32, 0, 131072, 33, 0, 131072, 34, 0, 131072, 35, 0, 131072, 65536, 0, 0, 65548, 0, 131079, 65549, 0, 2, 65550, 0, 131080, 65555, 0, 65539, 65556, 0, 131075, 65557, 0, 0, 65558, 0, 0, 65559, 0, 131074, 65560, 0, 65538, 65568, 0, 131072, 65569, 0, 131072, 65570, 0, 131072, 65571, 0, 131072, 131072, 0, 131072, 131090, 0, 65539, 131091, 0, 131075, 131092, 0, 0, 131093, 0, 0, 131094, 0, 65536, 131095, 0, 0, 131096, 0, 131074, 131097, 0, 65538, 131104, 0, 131072, 131105, 0, 131072, 131106, 0, 131072, 131107, 0, 131072, 196608, 0, 0, 196616, 0, 5, 196617, 0, 6, 196618, 0, 7, 196625, 0, 65539, 196626, 0, 131075, 196627, 0, 0, 196628, 0, 131072, 196629, 0, 0, 196630, 0, 0, 196631, 0, 0, 196632, 0, 0, 196633, 0, 131074, 196634, 0, 131077, 196635, 0, 131077, 196636, 0, 131077, 196637, 0, 131077, 196638, 0, 131077, 196639, 0, 131077, 196640, 0, 131072, 196641, 0, 131072, 196642, 0, 131072, 196643, 0, 131072, 262144, 0, 131072, 262160, 0, 65539, 262161, 0, 131075, 262162, 0, 0, 262163, 0, 0, 262164, 0, 0, 262165, 0, 0, 262166, 0, 0, 262167, 0, 131072, 262168, 0, 0, 262169, 0, 0, 262170, 0, 0, 262171, 0, 0, 262172, 0, 0, 262173, 0, 0, 262174, 0, 0, 262175, 0, 0, 262176, 0, 131072, 262177, 0, 131072, 262178, 0, 131072, 262179, 0, 131072, 327680, 0, 0, 327681, 0, 65542, 327682, 0, 2, 327683, 0, 2, 327684, 0, 2, 327685, 0, 2, 327686, 0, 65544, 327695, 0, 65539, 327696, 0, 131075, 327697, 0, 0, 327698, 0, 0, 327699, 0, 0, 327700, 0, 0, 327701, 0, 0, 327702, 0, 0, 327703, 0, 0, 327704, 0, 0, 327705, 0, 0, 327706, 0, 0, 327707, 0, 0, 327708, 0, 0, 327709, 0, 0, 327710, 0, 0, 327711, 0, 0, 327712, 0, 131072, 327713, 0, 131072, 327714, 0, 131072, 327715, 0, 131072, 393216, 0, 0, 393217, 0, 0, 393218, 0, 0, 393219, 0, 0, 393220, 0, 0, 393221, 0, 0, 393222, 14, 1, 393223, 14, 1, 393224, 14, 1, 393225, 14, 1, 393226, 14, 1, 393227, 14, 1, 393228, 14, 1, 393229, 14, 1, 393230, 0, 131078, 393231, 0, 131075, 393232, 0, 0, 393233, 0, 0, 393234, 0, 0, 393235, 0, 0, 393236, 0, 0, 393237, 0, 0, 393238, 0, 0, 393239, 0, 0, 393240, 0, 0, 393241, 0, 0, 393242, 0, 0, 393243, 0, 0, 393244, 0, 0, 393245, 0, 0, 393246, 0, 0, 393247, 0, 0, 393248, 0, 131072, 393249, 0, 131072, 393250, 0, 131072, 393251, 0, 131072, 458752, 0, 0, 458753, 0, 0, 458754, 0, 0, 458755, 0, 0, 458756, 0, 0, 458757, 0, 0, 458758, 14, 65537, 458759, 14, 65537, 458760, 14, 65537, 458761, 14, 65537, 458762, 14, 65537, 458763, 14, 65537, 458764, 14, 65537, 458765, 14, 65537, 458766, 0, 0, 458767, 0, 0, 458768, 0, 0, 458769, 0, 0, 458770, 0, 0, 458771, 0, 0, 458772, 0, 0, 458773, 0, 0, 458774, 0, 0, 458775, 0, 0, 458776, 0, 0, 458777, 0, 0, 458778, 0, 0, 458779, 0, 0, 458780, 0, 0, 458781, 0, 0, 458782, 0, 0, 458783, 0, 0, 458784, 0, 131072, 458785, 0, 131072, 458786, 0, 131072, 458787, 0, 131072 )
 
 [node name="coins" type="Node2D" parent="."]
-editor/display_folded = true
 
 [node name="coin8" parent="coins" instance=ExtResource( 7 )]
 position = Vector2( 1570, 50 )
@@ -107,8 +124,20 @@ position = Vector2( 870, 40 )
 [node name="coin6" parent="coins" instance=ExtResource( 7 )]
 position = Vector2( 1470, -40 )
 
+[node name="goal" type="Area2D" parent="coins"]
+position = Vector2( 49.7302, -165.768 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="coins/goal"]
+shape = SubResource( 4 )
+
+[node name="flagRed" type="Sprite" parent="coins/goal"]
+position = Vector2( -1.50653, 2.78497 )
+texture = ExtResource( 11 )
+
 [node name="enemies" type="Node2D" parent="."]
-editor/display_folded = true
 
 [node name="ant" parent="enemies" instance=ExtResource( 8 )]
 position = Vector2( 120, 290 )
@@ -129,7 +158,6 @@ position = Vector2( 1820, 30 )
 position = Vector2( 1950, 20 )
 
 [node name="HUD" type="CanvasLayer" parent="."]
-editor/display_folded = true
 script = ExtResource( 9 )
 
 [node name="label" type="Label" parent="HUD"]
@@ -232,6 +260,7 @@ custom_fonts/font = ExtResource( 10 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "JUMP"
+[connection signal="body_entered" from="coins/goal" to="player" method="_on_goal_body_entered"]
 [connection signal="pressed" from="HUD/left_button" to="HUD" method="_on_left_button_pressed"]
 [connection signal="released" from="HUD/left_button" to="HUD" method="_on_left_button_released"]
 [connection signal="pressed" from="HUD/right_button" to="HUD" method="_on_right_button_pressed"]

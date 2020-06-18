@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://interface/fonts/kenvector_future_32.tres" type="DynamicFont" id=1]
+
+[node name="control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="label" type="Label" parent="."]
+margin_left = 485.462
+margin_top = 236.811
+margin_right = 730.462
+margin_bottom = 396.811
+custom_fonts/font = ExtResource( 1 )
+text = "YOU WON"
+__meta__ = {
+"_edit_use_anchors_": false
+}

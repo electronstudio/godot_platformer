@@ -13,17 +13,16 @@
 [ext_resource path="res://characters/aliens/pink/alienPink_stand.png" type="Texture" id=11]
 
 [resource]
-
 animations = [ {
-"frames": [ ExtResource( 1 ) ],
-"loop": false,
-"name": "jump",
-"speed": 1.0
-}, {
 "frames": [ ExtResource( 2 ), ExtResource( 3 ) ],
 "loop": true,
 "name": "walk",
 "speed": 4.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": false,
+"name": "jump",
+"speed": 1.0
 }, {
 "frames": [ ExtResource( 4 ) ],
 "loop": false,
@@ -55,4 +54,3 @@ animations = [ {
 "name": "idle_side",
 "speed": 1.0
 } ]
-
