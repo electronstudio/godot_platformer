@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://enemy2.gd" type="Script" id=1]
+[ext_resource path="res://characters/enemies/ghost.tscn" type="PackedScene" id=2]
+[ext_resource path="res://audio/digital_sfx/source/pepSound3.ogg" type="AudioStream" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 30, 20 )
+
+[sub_resource type="AudioStreamRandomPitch" id=2]
+audio_stream = ExtResource( 3 )
+
+[node name="enemy2" type="KinematicBody2D"]
+pause_mode = 1
+position = Vector2( 30, 0 )
+collision_layer = 2
+collision_mask = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="enemy" parent="." instance=ExtResource( 2 )]
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -20 )
+shape = SubResource( 1 )
+
+[node name="visibility_enabler_2d" type="VisibilityEnabler2D" parent="."]
+process_parent = true
+physics_process_parent = true
+
+[node name="pepSound3" type="AudioStreamPlayer" parent="."]
+stream = SubResource( 2 )

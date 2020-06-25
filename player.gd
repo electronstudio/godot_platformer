@@ -3,6 +3,7 @@ extends KinematicBody2D
 var velocity = Vector2(0,0)
 var jump_timer = 0
 
+
 func _physics_process(delta):
 	if is_on_floor():
 		$alien_pink.animation = 'idle_front'
@@ -31,7 +32,7 @@ func _physics_process(delta):
 			velocity.y = -400
 			if not $phaseJump1.playing: $phaseJump1.play()
 
-	#velocity.x = clamp(velocity.x, -400, 400)
+	velocity.x = clamp(velocity.x, -400, 400)
 	$alien_pink.flip_h = velocity.x < 0
 	
 	if position.y>700:
@@ -43,6 +44,9 @@ func _physics_process(delta):
 			if position.y < collider.position.y - 10:
 				velocity.y = -400
 				collider.kill()
+				
+	
+		
 
 func kill():
 	get_tree().reload_current_scene()
