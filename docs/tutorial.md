@@ -93,7 +93,7 @@ Try adding this to the player.gd:
 
 ## Parallax Scrolling Background
 
-1. Add `ParallaxBackground` node to main scene.
+1. Add `ParallaxBackground` node to main scene.  Drag it so that it is the first child node in the scene.
 
 2. Add `ParallaxLayer` as child node of this.
 
@@ -101,11 +101,13 @@ Try adding this to the player.gd:
 
 4. Set `Motion->Mirroring-X` to 1024.
 
-5. Drag in an image, eg. `backgroundCastles.png` to the scene and drag it to become child of `ParallaxLayer`.
+5. Look at the images in the backgrounds folder.  Drag in an image, eg. `backgroundColorForest.png` to the scene and drag it to become child of `ParallaxLayer`.
+
+![](screenshot1.png)
 
 * What is Parallax?
 
-## Coins
+## Coins (Bug now fixed!)
 
 There is one coin node, an `Area2d`, already added for you.  It has a sound, image and collision shape but it doesn't have a script.
 
@@ -114,13 +116,19 @@ Right click it, select 'attach script', press 'Create'.  Delete all the code tha
 ```gdscript
 extends Area2D
 
+var collected = false
+
 func _on_coin_body_entered(body):
-	hide()
-	$powerUp5.play()
-	get_node("/root/main/HUD").inc_score()
-	yield(get_tree().create_timer(2.0), "timeout")
-	queue_free()
+	if not collected:
+		hide()
+		$powerUp5.play()
+		get_tree().get_current_scene().get_node("HUD").inc_score()
+		collected = true
 ```
+
+There was a bug in the original version of this tutorial.  If you followed that, replace your coin code with this new version.
+
+(By the way, it might be simpler to use a global variable for the score rather that putting it in the HUD node as I have done.)
 
 ## Instancing
 
