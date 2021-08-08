@@ -314,6 +314,8 @@ Challenges
 
 Add more tiles, coins and enemies to create a challenging game.  Get your friends to play the game.
 
+Publish a web version of the game (use Github Pages).
+
 Change the player sprite to a different one.
 
 Add a second player controlled by a second controller.
@@ -330,6 +332,8 @@ Create a gameover screen.
 
 Add additional levels, and a level select screen.
 
+Build a mobile phone version of the game.  (There are touch controls already configured in the **HUD** but
+the buttons may need to moved to the correct places.)
 
 
 
