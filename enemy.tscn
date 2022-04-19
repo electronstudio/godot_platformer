@@ -21,7 +21,6 @@ __meta__ = {
 }
 
 [node name="ant" parent="." instance=ExtResource( 2 )]
-frame = 1
 playing = true
 offset = Vector2( 0, -20 )
 

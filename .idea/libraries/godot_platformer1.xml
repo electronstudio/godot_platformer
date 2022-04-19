@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="godot_platformer1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/docs/godot_platformer1.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
