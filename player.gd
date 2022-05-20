@@ -4,7 +4,7 @@ var velocity = Vector2(0,0)
 var jump_timer = 0
 
 const ROPE_LENGTH = 500.0
-const GRAVITY = 6000.0
+const GRAVITY = 100.0
 const THURST = 6500.0
 
 var Hook = preload("res://hook.tscn")
@@ -28,9 +28,10 @@ func _physics_process(delta):
 	else:
 		$alien_pink.animation = 'jump'
 		if Input.is_action_pressed('right'):
-			velocity.x += 30
+			velocity.x += 100
 		elif Input.is_action_pressed('left'):
-			velocity.x -= 30
+			velocity.x -= 100
+		velocity.x = lerp(velocity.x, 0, 0.3)
 		
 	#var thrust = (Input.get_action_strength("thrust") - Input.get_action_strength("thrust2") + 1)/2
 	var thrust = Input.get_action_strength("thrust") - Input.get_action_strength("thrust2")
@@ -87,25 +88,32 @@ func _physics_process(delta):
 		hook.length = clamp(hook.length, 10, ROPE_LENGTH)
 		print(hook.length)
 	
-	if thrust > -1.0:
-		var scaled_thrust = scale(thrust, -1.0, 1.0, 1.0, 1.03)
-		scaled_thrust = pow(scaled_thrust, 5)
-		print(scaled_thrust)
-		velocity.y -= (GRAVITY*scaled_thrust) * delta
+	
+	#var t = Input.get_axis("thrust", "thrust2")
+	var t = Input.get_joy_axis(0,1)
+	t = scale(t, 1.0, -1.0, 0.0, 200.0)
+	if t > 50 && t < 150: t = 100
+	print(t)
+#	if thrust > -1.0:
+#		var scaled_thrust = scale(thrust, -1.0, 1.0, 1.0, 1.03)
+#		scaled_thrust = pow(scaled_thrust, 5)
+#		print(scaled_thrust)
+#		velocity.y -= (GRAVITY*scaled_thrust) * delta
 	velocity.y += GRAVITY * delta
+	velocity.y += -t * delta
 	velocity = move_and_slide(velocity, Vector2.UP)
 	
 	if jump_timer > 0:
 		jump_timer -= delta
-		if Input.is_action_pressed('jump'):
-			velocity.y = -400
+		if Input.is_action_just_pressed('jump'):
+			velocity.y = -200
 			if not $phaseJump1.playing: $phaseJump1.play()
 
-	if is_on_floor():
+	#if is_on_floor():
 		velocity.x = clamp(velocity.x, -200, 200)
-	else:
-		velocity.x = clamp(velocity.x, -800, 800)
-		velocity.y = clamp(velocity.y, -800, 800)
+	#else:
+	#	velocity.x = clamp(velocity.x, -800, 800)
+		#velocity.y = clamp(velocity.y, -800, 800)
 	$alien_pink.flip_h = velocity.x < 0
 	
 	if position.y>700:
