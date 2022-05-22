@@ -26,4 +26,5 @@ func _on_hook_body_entered(body):
 	attached = true
 	var player = get_node("/root/main/player")
 	length = position.distance_to(player.position)
+	length *= 0.5
 	print("HOOKED WITH LENGTH "+str(length))
