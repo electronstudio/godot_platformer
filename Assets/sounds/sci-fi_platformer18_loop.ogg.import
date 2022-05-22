@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/sci-fi_platformer18_loop.ogg-972d1c06f01b6b71a46af8c166325d9d.oggstr"
+
+[deps]
+
+source_file="res://Assets/sounds/sci-fi_platformer18_loop.ogg"
+dest_files=[ "res://.import/sci-fi_platformer18_loop.ogg-972d1c06f01b6b71a46af8c166325d9d.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
