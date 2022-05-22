@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 var velocity = Vector2(0,0)
-var jump_timer = 0
+
 
 const ROPE_LENGTH = 500.0
 const GRAVITY = 800.0
@@ -9,7 +9,7 @@ const THURST = 1200.0
 const GROUND_ACC = 300
 const FRICTION = 300
 const AIR_ACC = 100
-const JUMP = 500
+const JUMP = 300
 
 enum JetpackState {OFF, HOVER, RISE}
 var jetpack_state = JetpackState.OFF
@@ -17,6 +17,8 @@ var controller_trigger_pulled_at_least_once = false
 
 var Hook = preload("res://hook.tscn")
 var hook
+
+var air = false
 
 func scale(valueIn, baseMin,  baseMax, limitMin, limitMax):
 	return ((limitMax - limitMin) * (valueIn - baseMin) / (baseMax - baseMin)) + limitMin
@@ -29,34 +31,50 @@ func shift_towards(current, target, max_amount):
 	else:
 		return current - max_amount
 
-func _physics_process(delta):
-	if is_on_floor():
-		$alien_pink.animation = 'idle_front'
-		jump_timer = 0.5
-		if Input.is_action_pressed('right'):
-			velocity.x += GROUND_ACC * delta
-			$alien_pink.animation = 'walk'
-		elif Input.is_action_pressed("left"):
-			velocity.x -= GROUND_ACC * delta
-			$alien_pink.animation = 'walk'
-		else:
-			velocity.x = shift_towards(velocity.x, 0, FRICTION * delta)
-			
-		if Input.is_action_just_pressed('jump'):
-			velocity.y = -JUMP
-		#else:
-			#velocity.x = lerp(velocity.x, 0, 0.3)
+func do_input_ground(delta):
+	if air:
+		$land.play()
+		$marine.animation = 'land'
+		#$marine.play('land')
+		air = false
+		
+		
+	if Input.is_action_pressed('right'):
+		velocity.x += GROUND_ACC * delta
+	elif Input.is_action_pressed("left"):
+		velocity.x -= GROUND_ACC * delta
 	else:
-		$alien_pink.animation = 'jump'
-		if Input.is_action_pressed('right'):
-			velocity.x += AIR_ACC * delta
-		elif Input.is_action_pressed('left'):
-			velocity.x -= AIR_ACC * delta
-		#velocity.x = lerp(velocity.x, 0, 0.3)
+		velocity.x = shift_towards(velocity.x, 0, FRICTION * delta)
+		
+	if Input.is_action_pressed("crouch"):
+		$marine.animation = 'crouch'
 	
+		
+	if Input.is_action_just_pressed('jump'):
+		velocity.y = -JUMP
+		$hup.play()
+		
+	if $marine.animation != 'land':
+		if Input.is_action_pressed("crouch"):
+			$marine.animation = 'crouch'
+		else:
+			if velocity.x > 0.1 or velocity.x < -0.1:
+				$marine.animation = 'run'
+			else:
+				$marine.animation = 'default'
+
+func do_input_air(delta):
+	air = true
+	$marine.animation = 'jump'
+	if Input.is_action_pressed('right'):
+		velocity.x += AIR_ACC * delta
+	elif Input.is_action_pressed('left'):
+		velocity.x -= AIR_ACC * delta
+			
+func do_input_jetpack(delta):
 	var axis = -1
 	var raw_axis = Input.get_axis("thrust2", "thrust")
-	#var thrust = (Input.get_action_strength("thrust") - Input.get_action_strength("thrust2") + 1)/2
+	
 	if controller_trigger_pulled_at_least_once:
 		axis = raw_axis
 	elif raw_axis != 0:
@@ -65,40 +83,38 @@ func _physics_process(delta):
 		
 	if axis > 0.1:
 		jetpack_state = JetpackState.RISE
+		$particles_2d.emitting = true
 	elif axis > -0.9:
 		jetpack_state = JetpackState.HOVER
+		$particles_2d.emitting = true
 	else:
 		jetpack_state = JetpackState.OFF
-		
-	#print(jetpack_state)
-	#var min_thrust = 0.5
-	#var max_thrust = 0.9
-	#print(min_thrust)
-	#if thrust > 0.0:
-		#print("orig", thrust)
-		#thrust = scale(thrust, 0.0, 1.0, min_thrust, max_thrust)
-		#print("Scaled ",thrust)
-	
-	
-	
-	if Input.is_action_just_pressed("grapple"):
-		var x = Input.get_action_strength("aim_right") - Input.get_action_strength("aim_left")
-		var y = Input.get_action_strength("aim_down") - Input.get_action_strength("aim_up")
-		var v = Vector2(x, y)
-		if v.length()>0.1:
-			hook = Hook.instance()
-			hook.length = ROPE_LENGTH
-			hook.position = position
-			hook.position.y -= 30
-			get_node("/root/main").add_child(hook)
-			var direction = v.normalized()
-			hook.apply_central_impulse(direction*1000)
-		else:
-			hook = null
-		
+		$particles_2d.emitting = false
 
-		
+func fire_grapple():
 	if hook:
+		hook = null
+		return
+	var x = Input.get_action_strength("aim_right") - Input.get_action_strength("aim_left")
+	var y = Input.get_action_strength("aim_down") - Input.get_action_strength("aim_up")
+	var v = Vector2(x, y)
+	if v.length()<0.1:
+		if $marine.flip_h:
+			v = Vector2(-1, -1)
+		else:
+			v = Vector2(1, -1)
+	#if v.length()>0.1:
+	hook = Hook.instance()
+	hook.length = ROPE_LENGTH
+	hook.position = position
+	hook.position.y -= 30
+	get_node("/root/main").add_child(hook)
+	var direction = v.normalized()
+	hook.apply_central_impulse(direction*1000)
+	#else:
+	#	hook = null
+			
+func do_grappled_movement(delta):
 		if Input.is_action_pressed("hook_up"):
 			hook.length -= delta*200
 			
@@ -123,19 +139,24 @@ func _physics_process(delta):
 		
 		hook.length = clamp(hook.length, 10, ROPE_LENGTH)
 		print(hook.length)
+
+func _physics_process(delta):
+	if is_on_floor():
+		do_input_ground(delta)
+	else:
+		do_input_air(delta)
 	
+	do_input_jetpack(delta)
 	
-	#var t = Input.get_axis("thrust", "thrust2")
-	#var t = Input.get_joy_axis(0,1)
-	#t = scale(t, 1.0, -1.0, 0.0, 200.0)
-	#if t > 50 && t < 150: t = 100
-	#print(t)
-#	if thrust > -1.0:
-#		var scaled_thrust = scale(thrust, -1.0, 1.0, 1.0, 1.03)
-#		scaled_thrust = pow(scaled_thrust, 5)
-#		print(scaled_thrust)
-#		velocity.y -= (GRAVITY*scaled_thrust) * delta
+	if Input.is_action_just_pressed("grapple"):
+		fire_grapple()
+		
+		
+	if hook:
+		do_grappled_movement(delta)
+
 	velocity.y += GRAVITY * delta
+	
 	if jetpack_state == JetpackState.HOVER:
 		if velocity.y < 0:
 			jetpack_state = JetpackState.OFF
@@ -144,14 +165,9 @@ func _physics_process(delta):
 		#velocity.y = shift_towards(velocity.y, 0, THURST * delta)
 	if jetpack_state == JetpackState.RISE:
 		velocity.y -= THURST * delta
-	#velocity.y += -t * delta
+
 	velocity = move_and_slide(velocity, Vector2.UP)
 	
-	#if jump_timer > 0:
-	#	jump_timer -= delta
-	#	if Input.is_action_just_pressed('jump'):
-	#		velocity.y = -200
-	#		if not $phaseJump1.playing: $phaseJump1.play()
 
 	#if is_on_floor():
 	#velocity.x = clamp(velocity.x, -200, 200)
@@ -159,7 +175,22 @@ func _physics_process(delta):
 	#else:
 	#	velocity.x = clamp(velocity.x, -800, 800)
 		#velocity.y = clamp(velocity.y, -800, 800)
-	$alien_pink.flip_h = velocity.x < 0
+	if velocity.x < 0:
+		$marine.flip_h = true
+		#scale.x = -1
+		$particles_2d.scale.x = -1
+		$particles_2d.position.x = 10
+	elif velocity.x > 0:
+		#scale.x = 1
+		$marine.flip_h = false
+		$particles_2d.scale.x = 1
+		$particles_2d.position.x = -10
+		
+	if $marine.animation == 'run':
+		var s = abs(velocity.x)/500
+		$marine.speed_scale = s
+	else:
+		$marine.speed_scale = 1
 	
 	if position.y>700:
 		kill()
@@ -174,7 +205,6 @@ func _physics_process(delta):
 	
 			
 	
-
 func kill():
 	get_tree().reload_current_scene()
 
@@ -183,3 +213,20 @@ func _on_goal_body_entered(body):
 	print("body entered",body)
 	if body == self:
 		get_tree().change_scene("res://won.tscn")
+
+
+
+
+
+func _on_marine_frame_changed():
+	if $marine.animation == 'run':
+		if $marine.frame == 1:
+			$footstep.play()
+		elif $marine.frame == 5:
+			$footstep2.play()
+
+
+func _on_marine_animation_finished():
+	if $marine.animation == 'land':
+		$marine.animation = 'default'
+		pass
