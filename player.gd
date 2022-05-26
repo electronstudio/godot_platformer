@@ -85,6 +85,7 @@ func do_logic_air(delta):
 func do_logic_jetpack(delta):
 	var axis = -1
 	var raw_axis = Input.get_axis("thrust2", "thrust")
+
 	
 	if controller_trigger_pulled_at_least_once:
 		axis = raw_axis
@@ -92,28 +93,34 @@ func do_logic_jetpack(delta):
 		controller_trigger_pulled_at_least_once = true
 		axis = raw_axis
 		
-	if axis > 0.1:
+	if axis > 0.9 or Input.is_action_pressed("climb"):
 		jetpack_state = JetpackState.RISE
 		$particles_2d.emitting = true
-	elif axis > -0.9:
+	elif axis > -0.9 or Input.is_action_pressed("hover"):
 		jetpack_state = JetpackState.HOVER
 		$particles_2d.emitting = true
 	else:
 		jetpack_state = JetpackState.OFF
 		$particles_2d.emitting = false
 
+func face_left():
+	$marine.flip_h = true
+	$particles_2d.scale.x = -1
+	$particles_2d.position.x = 10
+
+func face_right():
+	$marine.flip_h = false
+	$particles_2d.scale.x = 1
+	$particles_2d.position.x = -10
+
 func animate():
-	if velocity.x < 0:
-		$marine.flip_h = true
-		$particles_2d.scale.x = -1
-		$particles_2d.position.x = 10
-	elif velocity.x > 0:
-		$marine.flip_h = false
-		$particles_2d.scale.x = 1
-		$particles_2d.position.x = -10
 	$marine.speed_scale = 1
 	match state:
 		State.STAND:
+			if velocity.x < 0:
+				face_left()
+			elif velocity.x > 0:
+				face_right()
 			if velocity.x > 0.1 or velocity.x < -0.1:
 				$marine.animation = 'run'
 				$marine.speed_scale = abs(velocity.x)/500
@@ -122,8 +129,16 @@ func animate():
 					$marine.animation = 'default'
 		State.CROUCH:
 			$marine.animation = 'crouch'
+			if Input.is_action_pressed("left"):
+				face_left()
+			if Input.is_action_pressed("right"):
+				face_right()
 		State.AIR:
 			$marine.animation = 'jump'
+			if Input.is_action_pressed("left"):
+				face_left()
+			if Input.is_action_pressed("right"):
+				face_right()
 		
 
 		

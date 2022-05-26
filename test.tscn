@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+[node name="node_2d" type="Node2D"]
+
+[node name="touch_screen_button" type="TouchScreenButton" parent="."]
+shape = SubResource( 1 )
