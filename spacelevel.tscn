@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=47 format=2]
 
 [ext_resource path="res://player.gd" type="Script" id=1]
 [ext_resource path="res://tileset-walls.tres" type="TileSet" id=2]
@@ -33,6 +33,7 @@
 [ext_resource path="res://line2.png" type="Texture" id=31]
 [ext_resource path="res://line4.png" type="Texture" id=32]
 [ext_resource path="res://touch_controls.gd" type="Script" id=33]
+[ext_resource path="res://bullet.tscn" type="PackedScene" id=34]
 
 [sub_resource type="AnimatedTexture" id=7]
 flags = 2
@@ -69,15 +70,34 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 color_ramp = SubResource( 6 )
 
+[sub_resource type="Curve" id=11]
+min_value = -200.0
+max_value = 200.0
+_data = [ Vector2( 0, -0.117401 ), 0.0, 0.0, 0, 0, Vector2( 0.495098, 5.23349 ), 0.0, 0.0, 0, 0, Vector2( 1, 135 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=12]
+offsets = PoolRealArray( 0.513812, 0.889503 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
 [sub_resource type="ShaderMaterial" id=9]
 shader = ExtResource( 9 )
 shader_param/Shift_Hue = 0.0
 
 [sub_resource type="SpriteFrames" id=3]
 animations = [ {
+"frames": [ ExtResource( 29 ) ],
+"loop": true,
+"name": "crouch",
+"speed": 5.0
+}, {
 "frames": [ ExtResource( 22 ), ExtResource( 20 ), ExtResource( 4 ), ExtResource( 10 ) ],
 "loop": true,
 "name": "default",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 29 ), ExtResource( 27 ), ExtResource( 28 ) ],
+"loop": false,
+"name": "getup",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 15 ) ],
@@ -85,20 +105,10 @@ animations = [ {
 "name": "jump",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 29 ) ],
-"loop": true,
-"name": "crouch",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 8 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 11 ), ExtResource( 19 ), ExtResource( 14 ), ExtResource( 21 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ) ],
 "loop": true,
 "name": "run",
 "speed": 30.0
-}, {
-"frames": [ ExtResource( 29 ), ExtResource( 27 ), ExtResource( 28 ) ],
-"loop": false,
-"name": "getup",
-"speed": 5.0
 } ]
 
 [sub_resource type="Environment" id=8]
@@ -157,6 +167,8 @@ texture = SubResource( 7 )
 texture_mode = 1
 antialiased = true
 
+[node name="bullets" type="Node2D" parent="."]
+
 [node name="player" type="KinematicBody2D" parent="."]
 position = Vector2( 694, 143 )
 collision_mask = 31
@@ -175,11 +187,41 @@ limit_bottom = 500
 [node name="phaseJump1" type="AudioStreamPlayer" parent="player"]
 stream = SubResource( 2 )
 
-[node name="particles_2d" type="Particles2D" parent="player"]
+[node name="particles_2d" type="CPUParticles2D" parent="player"]
+position = Vector2( -10, -21 )
+emitting = false
+amount = 200
+local_coords = false
+direction = Vector2( -3, 10 )
+spread = 30.0
+gravity = Vector2( 0, 100 )
+initial_velocity = 30.0
+initial_velocity_random = 0.16
+color_ramp = SubResource( 5 )
+
+[node name="particles_2d2" type="Particles2D" parent="player"]
+visible = false
 position = Vector2( -10, -21 )
 amount = 200
 local_coords = false
 process_material = SubResource( 4 )
+
+[node name="beam" type="CPUParticles2D" parent="player"]
+position = Vector2( 112, -24 )
+emitting = false
+amount = 2000
+lifetime = 1.5
+one_shot = true
+explosiveness = 0.7
+emission_shape = 2
+emission_rect_extents = Vector2( 100, 1 )
+direction = Vector2( 0, 1 )
+spread = 0.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 0.1
+linear_accel_curve = SubResource( 11 )
+color = Color( 1, 0, 0.85098, 1 )
+color_ramp = SubResource( 12 )
 
 [node name="marine" type="AnimatedSprite" parent="player"]
 material = SubResource( 9 )
@@ -188,6 +230,9 @@ frames = SubResource( 3 )
 animation = "getup"
 frame = 2
 playing = true
+
+[node name="node_2d" parent="player/marine" instance=ExtResource( 34 )]
+position = Vector2( 80, -2.289 )
 
 [node name="footstep" type="AudioStreamPlayer" parent="player"]
 stream = ExtResource( 25 )
@@ -213,7 +258,9 @@ environment = SubResource( 8 )
 [node name="touch_controls" type="CanvasLayer" parent="."]
 script = ExtResource( 33 )
 
-[node name="jump_button" type="TouchScreenButton" parent="touch_controls"]
+[node name="node_2d" type="Node2D" parent="touch_controls"]
+
+[node name="jump_button" type="TouchScreenButton" parent="touch_controls/node_2d"]
 position = Vector2( 45, 148 )
 shape = SubResource( 10 )
 passby_press = true
@@ -222,12 +269,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="color_rect" type="ColorRect" parent="touch_controls/jump_button"]
+[node name="color_rect" type="ColorRect" parent="touch_controls/node_2d/jump_button"]
 margin_right = 40.0
 margin_bottom = 40.0
 color = Color( 1, 1, 1, 0.482353 )
 
-[node name="left_button" type="TouchScreenButton" parent="touch_controls"]
+[node name="left_button" type="TouchScreenButton" parent="touch_controls/node_2d"]
 position = Vector2( 18, 177 )
 shape = SubResource( 10 )
 passby_press = true
@@ -236,12 +283,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="color_rect" type="ColorRect" parent="touch_controls/left_button"]
+[node name="color_rect" type="ColorRect" parent="touch_controls/node_2d/left_button"]
 margin_right = 40.0
 margin_bottom = 40.0
 color = Color( 1, 1, 1, 0.482353 )
 
-[node name="right_button" type="TouchScreenButton" parent="touch_controls"]
+[node name="right_button" type="TouchScreenButton" parent="touch_controls/node_2d"]
 position = Vector2( 74, 177 )
 shape = SubResource( 10 )
 passby_press = true
@@ -250,12 +297,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="color_rect" type="ColorRect" parent="touch_controls/right_button"]
+[node name="color_rect" type="ColorRect" parent="touch_controls/node_2d/right_button"]
 margin_right = 40.0
 margin_bottom = 40.0
 color = Color( 1, 1, 1, 0.482353 )
 
-[node name="down_button" type="TouchScreenButton" parent="touch_controls"]
+[node name="down_button" type="TouchScreenButton" parent="touch_controls/node_2d"]
 position = Vector2( 45, 206 )
 shape = SubResource( 10 )
 passby_press = true
@@ -264,12 +311,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="color_rect" type="ColorRect" parent="touch_controls/down_button"]
+[node name="color_rect" type="ColorRect" parent="touch_controls/node_2d/down_button"]
 margin_right = 40.0
 margin_bottom = 40.0
 color = Color( 1, 1, 1, 0.482353 )
 
-[node name="grapple_button" type="TouchScreenButton" parent="touch_controls"]
+[node name="grapple_button" type="TouchScreenButton" parent="touch_controls/node_2d"]
 position = Vector2( 227, 199 )
 shape = SubResource( 10 )
 passby_press = true
@@ -278,12 +325,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="color_rect" type="ColorRect" parent="touch_controls/grapple_button"]
+[node name="color_rect" type="ColorRect" parent="touch_controls/node_2d/grapple_button"]
 margin_right = 40.0
 margin_bottom = 40.0
 color = Color( 1, 1, 1, 0.482353 )
 
-[node name="hover_button2" type="TouchScreenButton" parent="touch_controls"]
+[node name="hover_button2" type="TouchScreenButton" parent="touch_controls/node_2d"]
 position = Vector2( 274, 198 )
 shape = SubResource( 10 )
 passby_press = true
@@ -292,12 +339,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="color_rect" type="ColorRect" parent="touch_controls/hover_button2"]
+[node name="color_rect" type="ColorRect" parent="touch_controls/node_2d/hover_button2"]
 margin_right = 40.0
 margin_bottom = 40.0
 color = Color( 1, 1, 1, 0.482353 )
 
-[node name="climb_button3" type="TouchScreenButton" parent="touch_controls"]
+[node name="climb_button3" type="TouchScreenButton" parent="touch_controls/node_2d"]
 position = Vector2( 274, 157 )
 shape = SubResource( 10 )
 passby_press = true
@@ -306,17 +353,17 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="color_rect" type="ColorRect" parent="touch_controls/climb_button3"]
+[node name="color_rect" type="ColorRect" parent="touch_controls/node_2d/climb_button3"]
 margin_right = 40.0
 margin_bottom = 40.0
 color = Color( 1, 1, 1, 0.482353 )
 
 [connection signal="animation_finished" from="player/marine" to="player" method="_on_marine_animation_finished"]
 [connection signal="frame_changed" from="player/marine" to="player" method="_on_marine_frame_changed"]
-[connection signal="pressed" from="touch_controls/jump_button" to="touch_controls" method="_on_touch_screen_button_pressed"]
-[connection signal="pressed" from="touch_controls/left_button" to="touch_controls" method="_on_touch_screen_button_pressed"]
-[connection signal="pressed" from="touch_controls/right_button" to="touch_controls" method="_on_touch_screen_button_pressed"]
-[connection signal="pressed" from="touch_controls/down_button" to="touch_controls" method="_on_touch_screen_button_pressed"]
-[connection signal="pressed" from="touch_controls/grapple_button" to="touch_controls" method="_on_touch_screen_button_pressed"]
-[connection signal="pressed" from="touch_controls/hover_button2" to="touch_controls" method="_on_touch_screen_button_pressed"]
-[connection signal="pressed" from="touch_controls/climb_button3" to="touch_controls" method="_on_touch_screen_button_pressed"]
+[connection signal="pressed" from="touch_controls/node_2d/jump_button" to="touch_controls" method="_on_touch_screen_button_pressed"]
+[connection signal="pressed" from="touch_controls/node_2d/left_button" to="touch_controls" method="_on_touch_screen_button_pressed"]
+[connection signal="pressed" from="touch_controls/node_2d/right_button" to="touch_controls" method="_on_touch_screen_button_pressed"]
+[connection signal="pressed" from="touch_controls/node_2d/down_button" to="touch_controls" method="_on_touch_screen_button_pressed"]
+[connection signal="pressed" from="touch_controls/node_2d/grapple_button" to="touch_controls" method="_on_touch_screen_button_pressed"]
+[connection signal="pressed" from="touch_controls/node_2d/hover_button2" to="touch_controls" method="_on_touch_screen_button_pressed"]
+[connection signal="pressed" from="touch_controls/node_2d/climb_button3" to="touch_controls" method="_on_touch_screen_button_pressed"]

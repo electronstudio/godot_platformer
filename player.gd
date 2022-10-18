@@ -21,6 +21,8 @@ var Hook = preload("res://hook.tscn")
 onready var hook_line = get_node("/root/main/hook_line")
 var hook
 
+var Bullet = preload("res://bullet.tscn")
+
 
 func scale(valueIn, baseMin,  baseMax, limitMin, limitMax):
 	return ((limitMax - limitMin) * (valueIn - baseMin) / (baseMax - baseMin)) + limitMin
@@ -86,6 +88,7 @@ func do_logic_jetpack(delta):
 	var axis = -1
 	var raw_axis = Input.get_axis("thrust2", "thrust")
 
+	print(raw_axis)
 	
 	if controller_trigger_pulled_at_least_once:
 		axis = raw_axis
@@ -96,7 +99,7 @@ func do_logic_jetpack(delta):
 	if axis > 0.9 or Input.is_action_pressed("climb"):
 		jetpack_state = JetpackState.RISE
 		$particles_2d.emitting = true
-	elif axis > -0.9 or Input.is_action_pressed("hover"):
+	elif axis > 0.2 or Input.is_action_pressed("hover"):
 		jetpack_state = JetpackState.HOVER
 		$particles_2d.emitting = true
 	else:
@@ -221,6 +224,15 @@ func _physics_process(delta):
 		
 	if hook:
 		do_grappled_movement(delta)
+		
+		
+	if Input.is_action_just_pressed("fire"):
+		#$beam.restart()
+		var bullet = Bullet.instance()
+		bullet.position = position - Vector2(0, 20)
+		bullet.linear_velocity = velocity
+		bullet.apply_central_impulse(Vector2(300,0))
+		get_node("/root/main/bullets").add_child(bullet)
 
 	velocity.y += GRAVITY * delta
 	
